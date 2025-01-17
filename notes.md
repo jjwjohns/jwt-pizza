@@ -7,11 +7,11 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | User activity                                       | Frontend component | Backend endpoints | Database SQL |
 | --------------------------------------------------- | ------------------ | ----------------- | ------------ |
 | View home page                                      |  home.tsx          |  none             |  none        |
-| Register new user<br/>(t@jwt.com, pw: test)         |  register.tsx      |  [POST] /api/auth |  INSERT INTO user (name, email, password) VALUES (?, ?, ?) INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?) |
-| Login new user<br/>(t@jwt.com, pw: test)            |  login.tsx         |  [PUT] /api/auth  |  SELECT * FROM user WHERE email=? SELECT * FROM userRole WHERE userId=?|
-| Order pizza                                         |  payment.tsx and menu.tsx|  '/api/order/menu'  [POST] '/api/order'|  SELECT * FROM menu INSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now()) INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?)            |
+| Register new user<br/>(t@jwt.com, pw: test)         |  register.tsx      |  [POST] /api/auth |  INSERT INTO user (name, email, password) VALUES (?, ?, ?)  INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?) |
+| Login new user<br/>(t@jwt.com, pw: test)            |  login.tsx         |  [PUT] /api/auth  |  SELECT * FROM user WHERE email=?  SELECT * FROM userRole WHERE userId=?|
+| Order pizza                                         |  payment.tsx  menu.tsx|  '/api/order/menu'  [POST] '/api/order'|  SELECT * FROM menu INSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())   INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?)            |
 | Verify pizza                                        |  delivery.tsx      |  [POST] https://pizza-factory.cs329.click/api/order/verify                |  none        |
-| View profile page                                   |                    |                   |              |
+| View profile page                                   |  dinerDashboard.tsx|                   |              |
 | View franchise<br/>(as diner)                       |                    |                   |              |
 | Logout                                              |                    |                   |              |
 | View About page                                     |                    |                   |              |
