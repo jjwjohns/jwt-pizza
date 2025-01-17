@@ -9,9 +9,9 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | View home page                                      |  home.tsx          |  none             |  none        |
 | Register new user<br/>(t@jwt.com, pw: test)         |  register.tsx      |  [POST] /api/auth |  INSERT INTO user (name, email, password) VALUES (?, ?, ?)  INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?) |
 | Login new user<br/>(t@jwt.com, pw: test)            |  login.tsx         |  [PUT] /api/auth  |  SELECT * FROM user WHERE email=?  SELECT * FROM userRole WHERE userId=?|
-| Order pizza                                         |  payment.tsx  menu.tsx|  '/api/order/menu'   [POST]'/api/order'|  SELECT * FROM menu INSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())   INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?)            |
+| Order pizza                                         |  payment.tsx  menu.tsx|  '/api/order/menu'   [POST]'/api/order'|  SELECT * FROM menu INSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())   INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?)   SELECT userId FROM auth WHERE token=?            |
 | Verify pizza                                        |  delivery.tsx      |  [POST] api/order/verify (pizza factory)               |  none        |
-| View profile page                                   |  dinerDashboard.tsx|  [GET] '/api/order' |     none         |
+| View profile page                                   |  dinerDashboard.tsx|  [GET] '/api/order' |   SELECT userId FROM auth WHERE token=?    SELECT id, franchiseId, storeId, date FROM dinerOrder WHERE dinerId=? LIMIT   SELECT id, menuId, description, price FROM orderItem WHERE orderId=?     |
 | View franchise<br/>(as diner)                       |  franchiseDashboard                  |   [GET] /api/franchise/${user.id}               |    None          |
 | Logout                                              |                    |                   |              |
 | View About page                                     |                    |                   |              |
