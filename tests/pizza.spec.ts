@@ -101,6 +101,27 @@ test('purchase with login', async ({ page }) => {
 
 
 test('register and logout', async ({ page }) => {
+  await page.route('**/api/auth', async (route) => {
+    const method = route.request().method();
+  
+    if (method === 'POST') {
+      const loginReq = {
+        name: "random",
+        email: "random@random.com",
+        password: "random"
+      };
+      const loginRes = { user: { id: 3, name: 'random', email: 'random@random.com', roles: [{ role: 'diner' }] }, token: 'abcdef' };
+  
+      expect(route.request().postDataJSON()).toMatchObject(loginReq);
+      await route.fulfill({ json: loginRes });
+  
+    } else if (method === 'DELETE') {
+      const logoutRes = { message: "logout successful" };
+      await route.fulfill({ json: logoutRes });
+    } else {
+    }
+  });
+
   await page.goto('/');
   await page.getByRole('link', { name: 'Register' }).click();
   await page.getByRole('textbox', { name: 'Full name' }).fill('random');
