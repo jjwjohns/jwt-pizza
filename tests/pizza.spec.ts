@@ -291,6 +291,7 @@ let franchiseRes = [
 });
 
 
+
 test('admin login, delete Franchise and store', async ({ page }) => {
   await page.route('*/**/api/auth', async (route) => {
     const loginReq = { email: 'a@jwt.com', password: 'admin' };
@@ -300,7 +301,37 @@ test('admin login, delete Franchise and store', async ({ page }) => {
     await route.fulfill({ json: loginRes });
   });
 
+  let franchiseRes = [
+    { id: 1, name: 'PizzaCorp', stores: [{ id: 4, name: 'Lehi' }] },
+  ];
+  
+  await page.route('*/**/api/franchise', async (route) => {
 
+    route.request().method() === 'GET'
+    expect(route.request().method()).toBe('GET');
+    await route.fulfill({ json: franchiseRes });
+  });
+
+  await page.route('*/**/api/franchise/1/store/4', async (route) => {
+    const storeRes = {
+      message: "store deleted"
+    };
+    expect(route.request().method()).toBe('DELETE');
+
+    franchiseRes = [{ id: 1, name: 'PizzaCorp', stores: [] }];
+
+    await route.fulfill({ json: storeRes });
+
+  });
+
+  await page.route('*/**/api/franchise/1', async (route) => {
+    franchiseRes = [],
+
+    await route.fulfill();
+  });
+
+
+  expect(franchiseRes).toEqual([{ id: 1, name: 'PizzaCorp', stores: [{ id: 4, name: 'Lehi' }] }]);
   await page.goto('/');
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -308,12 +339,15 @@ test('admin login, delete Franchise and store', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Password' }).fill('admin');
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('link', { name: 'Admin' }).click();
-  // await expect(page.getByText('Keep the dough rolling and')).toBeVisible();
-  await page.getByRole('row', { name: 'test20 0 ₿ Close' }).getByRole('button').click();
-  // await expect(page.getByText('Are you sure you want to')).toBeVisible();
+
+  await expect(page.getByText('Keep the dough rolling and')).toBeVisible();
+
+  await page.getByRole('row', { name: 'Lehi ₿ Close' }).getByRole('button').click();
+  await expect(page.getByText('Are you sure you want to')).toBeVisible();
   await page.getByRole('button', { name: 'Close' }).click();
-  await page.getByRole('row', { name: 'test 常用名字 Close' }).getByRole('button').click();
-  // await expect(page.getByText('Are you sure you want to')).toBeVisible();
+
+  await page.getByRole('row', { name: 'Close' }).getByRole('button').click();
+  await expect(page.getByText('Are you sure you want to')).toBeVisible();
   await page.getByRole('button', { name: 'Close' }).click();
-  // await expect(page.getByRole('row', { name: 'test 常用名字 Close' })).toHaveCount(0);
+  expect(franchiseRes).toEqual([]);
 });
