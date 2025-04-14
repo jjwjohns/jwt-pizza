@@ -28,7 +28,7 @@
 | Images         | ![Screenshot of default admin account in database](./default_admin.png)                                                                                                                                                                                                               |
 | Corrections    | Remove default admin accounts before deploying to production. If admin accounts are needed for initial setup, ensure they use strong, unique passwords and are removed or disabled after setup is complete. Implement a proper user provisioning process for administrative accounts. |
 
-### Peer 2: Jordan John
+### Peer 2: Jordan Johns
 
 | Item           | Result                                                                                                                                                                                                                                                                |
 | -------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
